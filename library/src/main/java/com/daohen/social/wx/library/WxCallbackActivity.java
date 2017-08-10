@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
+import com.daohen.personal.toolbox.library.util.Booleans;
 import com.daohen.personal.toolbox.library.util.Logs;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.thirdparty.library.gson.GsonFactory;
@@ -22,15 +23,12 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
  */
 public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
 
-    private Gson gson;
-
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
         WxProvider.get().handleIntent(getIntent(), this);
 
-        gson = GsonFactory.getDefault();
     }
 
     @Override
@@ -42,12 +40,16 @@ public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Logs.d(gson.toJson(baseReq));
+        if (!Booleans.isRelease()){
+            Logs.d("wx onReq = " + GsonFactory.getDefault().toJson(baseReq));
+        }
     }
 
     @Override
     public void onResp(BaseResp baseResp) {
-        Logs.d(gson.toJson(baseResp));
+        if (!Booleans.isRelease()){
+            Logs.d("wx onResp = " + GsonFactory.getDefault().toJson(baseResp));
+        }
         if (baseResp.errCode == 0){
             LoginObj.get().login(((SendAuth.Resp) baseResp).code);
         }
