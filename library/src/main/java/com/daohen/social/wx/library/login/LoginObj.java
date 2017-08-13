@@ -28,7 +28,7 @@ public class LoginObj {
 
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
-        req.state = "wx_library_from_daohen";
+        req.state = "wechat_sdk_demo_test";
         return req;
     }
 
