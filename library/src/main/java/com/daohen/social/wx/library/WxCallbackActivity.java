@@ -9,7 +9,6 @@ import com.daohen.personal.toolbox.library.util.Booleans;
 import com.daohen.personal.toolbox.library.util.Logs;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.thirdparty.library.gson.GsonFactory;
-import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -53,5 +52,6 @@ public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
         if (baseResp.errCode == 0){
             LoginObj.get().login(((SendAuth.Resp) baseResp).code);
         }
+        finish();
     }
 }

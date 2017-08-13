@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.daohen.personal.toolbox.library.Singleton;
-import com.daohen.personal.toolbox.library.util.Logs;
 import com.daohen.social.wx.library.login.LoginListener;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.social.wx.library.share.ShareBitmapObj;
@@ -200,7 +199,6 @@ public class WxProvider {
     }
 
     private WxProvider(){
-        Logs.e("TestTest");
     }
 
     private static final Singleton<WxProvider> gDefault = new Singleton<WxProvider>() {
