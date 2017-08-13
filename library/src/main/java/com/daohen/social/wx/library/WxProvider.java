@@ -37,7 +37,7 @@ public class WxProvider {
     public void registerWx(Context context, String appid, String appSecret){
         this.appid = appid;
         this.appSecret = appSecret;
-        iwxapi = WXAPIFactory.createWXAPI(context, appid, true);
+        iwxapi = WXAPIFactory.createWXAPI(context, appid, false);
         iwxapi.registerApp(appid);
     }
 
