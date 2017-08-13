@@ -13,7 +13,6 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
-
 /**
  * CREATE BY ALUN
  * EMAIL: alunfeixue2011@gmail.com
@@ -26,7 +25,6 @@ public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
         super.onCreate(savedInstanceState);
 
         WxProvider.get().handleIntent(getIntent(), this);
-
     }
 
     @Override
