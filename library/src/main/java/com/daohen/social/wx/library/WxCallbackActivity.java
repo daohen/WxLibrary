@@ -3,7 +3,6 @@ package com.daohen.social.wx.library;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import com.daohen.personal.toolbox.library.util.Booleans;
 import com.daohen.personal.toolbox.library.util.Logs;
@@ -23,8 +22,8 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         WxProvider.get().handleIntent(getIntent(), this);
 
