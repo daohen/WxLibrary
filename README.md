@@ -21,7 +21,9 @@ dependencies {
 }
 ```
 上面依赖的其它两个libray详情可参照
+
 [personalToolboxLibrary][1]
+
 [thirdPartyLibrary][2]
 
 （2）在包名的根目录下新建wxapi，并把一个extends WxCallbackActivity的Activity放在它下面,以上，就可以调用封装的方法，具体用法都在WxProvider中。
