@@ -5,6 +5,7 @@ import com.daohen.social.wx.library.WxProvider;
 import com.daohen.social.wx.library.bean.AccessTokenResponse;
 import com.daohen.social.wx.library.bean.WxUserInfoResponse;
 import com.daohen.thirdparty.library.retrofit.RetrofitFactory;
+import com.daohen.thirdparty.library.rxjava.SchedulerTransformer;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,8 +35,7 @@ public class LoginObj {
 
     public void login(String code){
         loginService.getAccessToken(WxProvider.get().getAppid(), WxProvider.get().getAppSecret(), code, "authorization_code")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new SchedulerTransformer<AccessTokenResponse>())
                 .subscribe(new DefaultObserver<AccessTokenResponse>() {
                     @Override
                     public void onNext(@NonNull AccessTokenResponse accessTokenResponse) {
@@ -57,8 +57,7 @@ public class LoginObj {
 
     public void getUserInfo(AccessTokenResponse response){
         loginService.getUserInfo(response.getAccessToken(), response.getOpenid())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new SchedulerTransformer<WxUserInfoResponse>())
                 .subscribe(new DefaultObserver<WxUserInfoResponse>() {
                     @Override
                     public void onNext(@NonNull WxUserInfoResponse wxUserInfoResponse) {
