@@ -5,13 +5,11 @@ import com.daohen.social.wx.library.WxProvider;
 import com.daohen.social.wx.library.bean.AccessTokenResponse;
 import com.daohen.social.wx.library.bean.WxUserInfoResponse;
 import com.daohen.thirdparty.library.retrofit.RetrofitFactory;
-import com.daohen.thirdparty.library.rxjava.SchedulerTransformer;
+import com.daohen.thirdparty.library.rxjava.SingleDefaultObserver;
+import com.daohen.thirdparty.library.rxjava.SingleSchedulerTransformer;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DefaultObserver;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * CREATE BY ALUN
@@ -27,6 +25,9 @@ public class LoginObj {
     public SendAuth.Req getSendAuthReq(LoginListener listener){
         this.loginListener = listener;
 
+        if (loginListener == null)
+            throw new NullPointerException("LoginListener is null");
+
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "wx_library_from_daohen";
@@ -35,45 +36,32 @@ public class LoginObj {
 
     public void login(String code){
         loginService.getAccessToken(WxProvider.get().getAppid(), WxProvider.get().getAppSecret(), code, "authorization_code")
-                .compose(new SchedulerTransformer<AccessTokenResponse>())
-                .subscribe(new DefaultObserver<AccessTokenResponse>() {
+                .compose(new SingleSchedulerTransformer<AccessTokenResponse>())
+                .subscribe(new SingleDefaultObserver<AccessTokenResponse>() {
                     @Override
-                    public void onNext(@NonNull AccessTokenResponse accessTokenResponse) {
+                    public void onSuccess(@NonNull AccessTokenResponse accessTokenResponse) {
                         getUserInfo(accessTokenResponse);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        if (loginListener != null)
-                            loginListener.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        loginListener.onFail(e);
                     }
                 });
     }
 
     public void getUserInfo(AccessTokenResponse response){
         loginService.getUserInfo(response.getAccessToken(), response.getOpenid())
-                .compose(new SchedulerTransformer<WxUserInfoResponse>())
-                .subscribe(new DefaultObserver<WxUserInfoResponse>() {
+                .compose(new SingleSchedulerTransformer<WxUserInfoResponse>())
+                .subscribe(new SingleDefaultObserver<WxUserInfoResponse>() {
                     @Override
-                    public void onNext(@NonNull WxUserInfoResponse wxUserInfoResponse) {
-                        if (loginListener != null)
-                            loginListener.onSuccess(wxUserInfoResponse);
+                    public void onSuccess(@NonNull WxUserInfoResponse wxUserInfoResponse) {
+                        loginListener.onSuccess(wxUserInfoResponse);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        if (loginListener != null)
-                            loginListener.onFail(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        loginListener.onFail(e);
                     }
                 });
     }
