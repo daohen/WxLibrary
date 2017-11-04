@@ -40,6 +40,15 @@ public class WxProvider {
         iwxapi.registerApp(appid);
     }
 
+    public boolean isWXAppInstalled(){
+        checkNull();
+        return iwxapi.isWXAppInstalled();
+    }
+
+    public IWXAPI getIwxapi(){
+        return iwxapi;
+    }
+
     public String getAppid(){
         return appid;
     }
