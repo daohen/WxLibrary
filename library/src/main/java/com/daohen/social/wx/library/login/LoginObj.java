@@ -1,6 +1,7 @@
 package com.daohen.social.wx.library.login;
 
 import com.daohen.personal.toolbox.library.Singleton;
+import com.daohen.personal.toolbox.library.util.Toasts;
 import com.daohen.social.wx.library.WxProvider;
 import com.daohen.social.wx.library.bean.AccessTokenResponse;
 import com.daohen.social.wx.library.bean.WxUserInfoResponse;
@@ -25,8 +26,9 @@ public class LoginObj {
     public SendAuth.Req getSendAuthReq(LoginListener listener){
         this.loginListener = listener;
 
-        if (loginListener == null)
-            throw new NullPointerException("LoginListener is null");
+        if (loginListener == null){
+            Toasts.show("调起微信出现异常");
+        }
 
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
@@ -45,7 +47,8 @@ public class LoginObj {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        loginListener.onFail(e);
+                        if (loginListener != null)
+                            loginListener.onFail(e);
                     }
                 });
     }
@@ -56,12 +59,14 @@ public class LoginObj {
                 .subscribe(new SingleDefaultObserver<WxUserInfoResponse>() {
                     @Override
                     public void onSuccess(@NonNull WxUserInfoResponse wxUserInfoResponse) {
-                        loginListener.onSuccess(wxUserInfoResponse);
+                        if (loginListener != null)
+                            loginListener.onSuccess(wxUserInfoResponse);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        loginListener.onFail(e);
+                        if (loginListener != null)
+                            loginListener.onFail(e);
                     }
                 });
     }
