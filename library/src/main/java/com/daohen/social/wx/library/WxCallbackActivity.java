@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.daohen.personal.toolbox.library.util.Booleans;
 import com.daohen.personal.toolbox.library.util.Logs;
+import com.daohen.personal.toolbox.library.util.Toasts;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.thirdparty.library.gson.GsonFactory;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -46,8 +47,20 @@ public class WxCallbackActivity extends Activity implements IWXAPIEventHandler{
         if (!Booleans.isRelease()){
             Logs.d("wx onResp = " + GsonFactory.getDefault().toJson(baseResp));
         }
-        if (baseResp.errCode == 0){
-            LoginObj.get().login(((SendAuth.Resp) baseResp).code);
+
+        switch (baseResp.errCode){
+            case BaseResp.ErrCode.ERR_OK:
+                switch (baseResp.getType()){
+                    case 1://登录
+                        LoginObj.get().login(((SendAuth.Resp) baseResp).code);
+                        break;
+                    case 2://分享
+                        break;
+                }
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                Toasts.show("你已取消");
+                break;
         }
         finish();
     }
