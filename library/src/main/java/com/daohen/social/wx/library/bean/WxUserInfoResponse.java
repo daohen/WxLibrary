@@ -1,5 +1,7 @@
 package com.daohen.social.wx.library.bean;
 
+import com.daohen.personal.toolbox.library.util.Strings;
+
 /**
  * CREATE BY ALUN
  * EMAIL: alunfeixue2011@gmail.com
@@ -15,6 +17,13 @@ public class WxUserInfoResponse {
     private String country;
     private String headimgurl;
     private String unionid;
+
+    public String getMaxHeadimgurl(){
+        if (Strings.isNull(headimgurl))
+            return headimgurl;
+
+        return headimgurl.substring(0, headimgurl.lastIndexOf('/')) + "/0";
+    }
 
     public String getOpenid() {
         return openid;
