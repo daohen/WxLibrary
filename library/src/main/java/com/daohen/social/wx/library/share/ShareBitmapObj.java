@@ -21,6 +21,7 @@ public class ShareBitmapObj extends ShareObj {
     public static class Builder{
         private Bitmap bitmap;
         private boolean isTimeline;
+        private boolean hasThumb;
 
         public Builder bitmap(Bitmap bitmap){
             this.bitmap = bitmap;
@@ -32,15 +33,23 @@ public class ShareBitmapObj extends ShareObj {
             return this;
         }
 
+        public Builder hasThumb(boolean hasThumb){
+            this.hasThumb = hasThumb;
+            return this;
+        }
+
         public ShareBitmapObj build(){
             if (bitmap == null)
                 throw new NullPointerException("分享的图片不能为空");
 
             WXMediaMessage mediaMessage = new WXMediaMessage();
             mediaMessage.mediaObject = new WXImageObject(bitmap);
-            Bitmap thumbBmp = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
-            bitmap.recycle();
-            mediaMessage.thumbData = Bitmaps.bmpToByteArray(thumbBmp, true);
+
+            if (hasThumb){
+                Bitmap thumbBmp = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
+                bitmap.recycle();
+                mediaMessage.thumbData = Bitmaps.bmpToByteArray(thumbBmp, true);
+            }
 
             SendMessageToWX.Req req = new SendMessageToWX.Req();
             req.transaction = buildTransation("img");

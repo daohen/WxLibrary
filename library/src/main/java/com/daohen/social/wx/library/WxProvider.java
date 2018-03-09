@@ -83,14 +83,19 @@ public class WxProvider {
      * @param bitmap
      * @param isTimeline
      */
-    public void shareBitmap(Bitmap bitmap, boolean isTimeline){
+    public void shareBitmap(Bitmap bitmap, boolean isTimeline, boolean hasThumb){
         checkNull();
 
         ShareBitmapObj bitmapObj = new ShareBitmapObj.Builder()
                 .bitmap(bitmap)
                 .isTimeline(isTimeline)
+                .hasThumb(hasThumb)
                 .build();
         iwxapi.sendReq(bitmapObj.getReq());
+    }
+
+    public void shareBitmap(Bitmap bitmap, boolean isTimeline){
+        shareBitmap(bitmap, isTimeline, true);
     }
 
     public void shareMusic(String url, String title, Bitmap thumb, boolean isTimeline){
