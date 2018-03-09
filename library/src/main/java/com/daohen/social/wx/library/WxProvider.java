@@ -226,5 +226,4 @@ public class WxProvider {
         if (iwxapi == null)
             throw new NullPointerException("需要先注册到微信才能使用，请先调用registerWx方法");
     }
-
 }
