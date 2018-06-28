@@ -62,7 +62,7 @@ public class ShareVideoObj extends ShareObj {
             mediaMessage.mediaObject = videoObject;
             mediaMessage.title = title;
             mediaMessage.description = desc;
-            mediaMessage.thumbData = Bitmaps.bmpToByteArray(thumb, true);
+            mediaMessage.thumbData = bmpToByteArray(thumb, true);
 
             SendMessageToWX.Req req = new SendMessageToWX.Req();
             req.transaction = buildTransation("video");

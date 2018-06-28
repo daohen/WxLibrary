@@ -71,7 +71,7 @@ public class ShareMiniProgramObj extends ShareObj {
             mediaMessage.title = title;
             mediaMessage.description = desc;
             if (thumb != null)
-                mediaMessage.thumbData = Bitmaps.bmpToByteArray(thumb, true);
+                mediaMessage.thumbData = bmpToByteArray(thumb, true);
 
             SendMessageToWX.Req req = new SendMessageToWX.Req();
             req.transaction = buildTransation("miniprogram");

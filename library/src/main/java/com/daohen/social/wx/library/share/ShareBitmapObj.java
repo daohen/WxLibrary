@@ -48,7 +48,7 @@ public class ShareBitmapObj extends ShareObj {
             if (hasThumb){
                 Bitmap thumbBmp = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
                 bitmap.recycle();
-                mediaMessage.thumbData = Bitmaps.bmpToByteArray(thumbBmp, true);
+                mediaMessage.thumbData = bmpToByteArray(thumbBmp, true);
             }
 
             SendMessageToWX.Req req = new SendMessageToWX.Req();
