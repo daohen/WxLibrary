@@ -3,8 +3,10 @@ package com.daohen.social.wx.library;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.daohen.personal.toolbox.library.Singleton;
+import com.daohen.personal.toolbox.library.util.Logs;
 import com.daohen.social.wx.library.login.LoginListener;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.social.wx.library.share.ShareBitmapObj;
@@ -224,6 +226,6 @@ public class WxProvider {
 
     private void checkNull(){
         if (iwxapi == null)
-            throw new NullPointerException("需要先注册到微信才能使用，请先调用registerWx方法");
+            Logs.e("需要先注册到微信才能使用，请先调用registerWx方法");
     }
 }
