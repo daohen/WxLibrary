@@ -3,10 +3,9 @@ package com.daohen.social.wx.library;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.daohen.personal.toolbox.library.Singleton;
-import com.daohen.personal.toolbox.library.util.Logs;
+import com.daohen.personal.toolbox.library.util.Toasts;
 import com.daohen.social.wx.library.login.LoginListener;
 import com.daohen.social.wx.library.login.LoginObj;
 import com.daohen.social.wx.library.share.ShareBitmapObj;
@@ -43,7 +42,8 @@ public class WxProvider {
     }
 
     public boolean isWXAppInstalled(){
-        checkNull();
+        if (checkNull())
+            return false;
         return iwxapi.isWXAppInstalled();
     }
 
@@ -70,7 +70,8 @@ public class WxProvider {
      * @param isTimeline
      */
     public void shareText(String content, String desc, boolean isTimeline){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareTextObj textObj = new ShareTextObj.Builder()
                 .content(content)
@@ -86,7 +87,8 @@ public class WxProvider {
      * @param isTimeline
      */
     public void shareBitmap(Bitmap bitmap, boolean isTimeline, boolean hasThumb){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareBitmapObj bitmapObj = new ShareBitmapObj.Builder()
                 .bitmap(bitmap)
@@ -112,7 +114,8 @@ public class WxProvider {
      * @param thumb
      */
     public void shareMusic(String url, String title, String desc, Bitmap thumb, boolean isTimeline){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareMusicObj musicObj = new ShareMusicObj.Builder()
                 .url(url)
@@ -138,7 +141,8 @@ public class WxProvider {
      * @param isTimeline
      */
     public void shareVideo(String url, String title, String desc, Bitmap thumb, boolean isTimeline){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareVideoObj videoObj = new ShareVideoObj.Builder()
                 .url(url)
@@ -163,7 +167,8 @@ public class WxProvider {
      * @param isTimeline
      */
     public void shareWebpage(String url, String title, String desc, Bitmap thumb, boolean isTimeline){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareWebpageObj webpageObj = new ShareWebpageObj.Builder()
                 .url(url)
@@ -185,7 +190,8 @@ public class WxProvider {
      * @param thumb
      */
     public void shareMiniProgram(String url, String username, String path, String title, String desc, Bitmap thumb){
-        checkNull();
+        if (checkNull())
+            return;
 
         ShareMiniProgramObj miniProgramObj = new ShareMiniProgramObj.Builder()
                 .url(url)
@@ -199,7 +205,8 @@ public class WxProvider {
     }
 
     public void handleIntent(Intent intent, IWXAPIEventHandler iwxapiEventHandler){
-        checkNull();
+        if (checkNull())
+            return;
 
         iwxapi.handleIntent(intent, iwxapiEventHandler);
     }
@@ -209,7 +216,8 @@ public class WxProvider {
      * @param listener
      */
     public void login(LoginListener listener){
-        checkNull();
+        if (checkNull())
+            return;
 
         iwxapi.sendReq(LoginObj.get().getSendAuthReq(listener));
     }
@@ -224,8 +232,11 @@ public class WxProvider {
         }
     };
 
-    private void checkNull(){
-        if (iwxapi == null)
-            Logs.e("需要先注册到微信才能使用，请先调用registerWx方法");
+    private boolean checkNull(){
+        if (iwxapi == null){
+            Toasts.show("调起微信失败,请重启应用");
+            return true;
+        }
+        return false;
     }
 }
