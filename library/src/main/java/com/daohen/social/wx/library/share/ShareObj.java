@@ -47,12 +47,12 @@ public class ShareObj {
             output.close();
         } catch (Exception var5) {
             var5.printStackTrace();
-        } finally {
-//            if (needRecycle) {//交给外部回收
-//                if (bmp != null)
-//                    bmp.recycle();
-//            }
-        }
+        } /*finally {
+            if (needRecycle) {//交给外部回收
+                if (bmp != null)
+                    bmp.recycle();
+            }
+        }*/
 
         return result;
     }
